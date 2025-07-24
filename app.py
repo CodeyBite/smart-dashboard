@@ -53,14 +53,16 @@ def get_news():
     api_key = os.getenv("NEWS_API_KEY")
     url = f"https://newsapi.org/v2/top-headlines?country=in&apiKey={api_key}"
 
-    response = requests.get(news_url)
+    response = requests.get(url)  # ✅ use 'url', not 'news_url'
     articles = []
+
     if response.status_code == 200:
         data = response.json()
-    articles == data.get('articles',[10])  # Limit to top 10 news
-    
-    return
-render_template("index.html", articles=articles)
+        articles = data.get('articles', [])[:10]  # ✅ limit to top 10 news
+    else:
+        print("Failed to fetch news:", response.status_code)
+
+    return render_template("index.html", articles=articles)  # ✅ return was broken
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
