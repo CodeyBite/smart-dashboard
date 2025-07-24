@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("WEATHER_API_KEY")
 
 @app.route('/')
 def index():
@@ -15,7 +15,7 @@ def get_time():
     from datetime import datetime
     import pytz
     tz = pytz.timezone('Asia/Kolkata')
-   current_time = datetime.now(tz).strftime("%A %d %B,%Y\n%I:%M:%S %p")
+   current_time = datetime.now(india_timezone).strftime('%I:%M %p')
     return jsonify(time=current_time)
 
 @app.route('/weather')
