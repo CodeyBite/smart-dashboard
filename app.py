@@ -44,7 +44,7 @@ def dashboard():
         city = request.form.get("city") or "Surat"
 
     weather = get_weather(city)
-    return render_template("dashboard.html", time=time_str, date=date_str, weather=weather, city=city)
+    return render_template("index.html", time=time_str, date=date_str, weather=weather, city=city)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=10000)
