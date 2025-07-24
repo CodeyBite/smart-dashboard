@@ -1,48 +1,262 @@
+/* ===== BASE STYLES ===== */
 :root {
-    --bg-light: #f5f7fa;
-    --card-light: #ffffff;
-    --text-light: #333333;
-    --accent-light: #00a8ff;
-    
-    --bg-dark: #1e2130;
-    --card-dark: #2a3042;
-    --text-dark: #ffffff;
-    --accent-dark: #00FFAA;
+  /* Light Mode */
+  --bg-light: #f5f7fa;
+  --card-light: #ffffff;
+  --text-light: #333333;
+  --accent-light: #00a8ff;
+  --input-light: #f0f0f0;
+  
+  /* Dark Mode */
+  --bg-dark: #1e2130;
+  --card-dark: #2a3042;
+  --text-dark: #ffffff;
+  --accent-dark: #00FFAA;
+  --input-dark: #3a3f5b;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: var(--bg-light);
-    color: var(--text-light);
-    margin: 0;
-    padding: 20px;
-    transition: all 0.3s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
 }
 
 body.dark-mode {
-    background: var(--bg-dark);
-    color: var(--text-dark);
+  background: var(--bg-dark);
+  color: var(--text-dark);
 }
 
-/* Header styles */
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
-/* Card styles */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* ===== CARDS ===== */
 .card {
-    background: var(--card-light);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+  background: var(--card-light);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .dark-mode .card {
-    background: var(--card-dark);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  background: var(--card-dark);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.12);
+}
+
+/* ===== WEATHER CARD ===== */
+.weather-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0,0,0,0.1));
+}
+
+.weather-result {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+#temp {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+#description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* ===== TO-DO CARD ===== */
+.todo-card {
+  order: 1; /* Moves to top on mobile */
+}
+
+#todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#todo-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: var(--input-light);
+}
+
+.dark-mode #todo-input {
+  background: var(--input-dark);
+  color: white;
+}
+
+#todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#todo-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: rgba(0,168,255,0.08);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.dark-mode #todo-list li {
+  background: rgba(0,255,170,0.08);
+}
+
+.delete-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ===== NEWS CARD ===== */
+.news-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.dark-mode .news-item {
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+
+.news-item h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.05rem;
+}
+
+.news-item p {
+  margin: 0 0 8px 0;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+/* ===== DARK MODE TOGGLE ===== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ccc;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background: var(--accent-dark);
+}
+
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+  
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .dark-mode-toggle {
+    align-self: flex-end;
+  }
+  
+  #todo-form {
+    flex-direction: column;
+  }
+  
+  #todo-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .weather-result {
+    flex-direction: column;
+    text-align: center;
+  }
 }

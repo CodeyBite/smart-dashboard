@@ -39,7 +39,8 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
         document.getElementById('temp').textContent = `${data.temp}°C`;
         document.getElementById('description').textContent = data.description;
         document.getElementById('humidity').textContent = `Humidity: ${data.humidity}%`;
-        document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.icon}.png`;
+        document.getElementById('weather-icon').innerHTML = `<img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" 
+                         alt="${data.description}" class="weather-icon">`;
     } catch (error) {
         alert(`Error: ${error.message}`);
     }
@@ -69,3 +70,33 @@ async function loadNews() {
     }
 }
 loadNews();
+
+// To-Do List Logic
+const todoForm = document.getElementById('todo-form');
+const todoInput = document.getElementById('todo-input');
+const todoList = document.getElementById('todo-list');
+
+todoForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const task = todoInput.value.trim();
+  if (task) {
+    addTodoItem(task);
+    todoInput.value = '';
+  }
+});
+
+function addTodoItem(task) {
+  const li = document.createElement('li');
+  li.innerHTML = `
+    <span>${task}</span>
+    <button class="delete-btn">×</button>
+  `;
+  li.querySelector('.delete-btn').addEventListener('click', () => li.remove());
+  todoList.appendChild(li);
+}
+
+// Weather Icon Fix (replace existing code)
+const weatherIcon = document.getElementById('weather-icon');
+// ... (in your weather API callback)
+weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" 
+                         alt="${data.description}" class="weather-icon">`;
