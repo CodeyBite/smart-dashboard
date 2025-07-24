@@ -1,90 +1,38 @@
-// Dark Mode Toggle
-document.getElementById('theme-toggle').addEventListener('change', function () {
-    document.body.classList.toggle('dark-mode', this.checked);
-    localStorage.setItem('darkMode', this.checked);
-});
-
-// Load dark mode preference
-window.addEventListener('load', () => {
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    document.getElementById('theme-toggle').checked = isDark;
-    if (isDark) document.body.classList.add('dark-mode');
-    updateTime();
-    loadTodos();
-});
-
-// Live Time Update
+// TIME CLOCK
 function updateTime() {
-    const timeDisplay = document.getElementById('time');
-    setInterval(() => {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString();
-        const dateString = now.toLocaleDateString();
-        timeDisplay.textContent = `${dateString} ${timeString}`;
-    }, 1000);
+  const now = new Date();
+  const timeElement = document.getElementById("time");
+  timeElement.textContent = now.toLocaleTimeString();
 }
+setInterval(updateTime, 1000);
+updateTime();
 
-// To-do List
-function addTodo(text) {
-    const todoList = document.getElementById('todo-list');
-    const li = document.createElement('li');
-    li.textContent = text;
-
-    const delBtn = document.createElement('button');
-    delBtn.textContent = '✕';
-    delBtn.onclick = () => {
-        todoList.removeChild(li);
-        saveTodos();
-    };
-
-    li.appendChild(delBtn);
-    todoList.appendChild(li);
-    saveTodos();
-}
-
-function saveTodos() {
-    const todos = [];
-    document.querySelectorAll('#todo-list li').forEach(li => {
-        todos.push(li.firstChild.textContent.trim());
-    });
-    localStorage.setItem('todos', JSON.stringify(todos));
-}
-
-function loadTodos() {
-    const saved = JSON.parse(localStorage.getItem('todos') || "[]");
-    saved.forEach(text => addTodo(text));
-}
-
-document.getElementById('todo-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const input = document.getElementById('todo-input');
-    if (input.value.trim()) {
-        addTodo(input.value.trim());
-        input.value = '';
-    }
+// DARK MODE TOGGLE
+const toggle = document.getElementById("darkToggle");
+toggle.addEventListener("change", () => {
+  document.body.classList.toggle("dark-mode", toggle.checked);
 });
 
-// Weather form
-document.getElementById('weather-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const city = document.getElementById('city-input').value;
-    const weatherInfo = document.getElementById('weather-result');
-    if (!city.trim()) return;
-
-    try {
-        const res = await fetch(`/weather?city=${city}`);
-        const data = await res.json();
-
-        if (data.error) {
-            weatherInfo.innerHTML = `<p>${data.error}</p>`;
-        } else {
-            weatherInfo.innerHTML = `
-                <p>${data.city}, ${data.country}</p>
-                <p>${data.temp}°C - ${data.description}</p>
-                <img src="http://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather Icon">
-            `;
-        }
-    } catch (err) {
-        weatherInfo.innerHTML = `<p>Could not fetch weather info</p>`;
-    }
+// WEATHER FETCH
+document.getElementById("weatherForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const city = document.getElementById("cityInput").value;
+  fetch(`/weather?city=${encodeURIComponent(city)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const weatherBox = document.getElementById("weather-box");
+      if (data.error) {
+        weatherBox.innerHTML = `<p>${data.error}</p>`;
+      } else {
+        weatherBox.innerHTML = `
+          <h3>${data.city}</h3>
+          <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather Icon">
+          <p>${data.description}</p>
+          <p>${data.temp}°C</p>
+        `;
+      }
+    })
+    .catch(() => {
+      document.getElementById("weather-box").innerHTML = `<p>Failed to fetch weather</p>`;
+    });
 });

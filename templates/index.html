@@ -1,54 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Smart Dashboard</h1>
-            <p id="time"></p>
-            <label class="switch">
-                <input type="checkbox" id="theme-toggle">
-                <span class="slider"></span>
-            </label>
-            <p class="dark-label">Dark Mode</p>
-        </header>
-
-        <!-- Weather -->
-        <section class="weather">
-            <form action="/weather" method="POST">
-                <input type="text" name="city" placeholder="Enter city..." required />
-                <button type="submit">Get Weather</button>
-            </form>
-            {% if weather %}
-                <div class="weather-box">
-                    <h2>{{ weather.city }}</h2>
-                    <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="icon" />
-                    <p>{{ weather.temp }}°C - {{ weather.desc }}</p>
-                </div>
-            {% elif error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
-        </section>
-
-        <!-- To-do List -->
-        <section class="todo">
-            <h2>To-Do List</h2>
-            <input type="text" id="todo-input" placeholder="Add a task..." />
-            <ul id="todo-list"></ul>
-        </section>
-
-        <!-- News -->
-        <section class="news">
-            <h2>Latest News</h2>
-            <ul id="news-list"></ul>
-        </section>
+  <div class="container">
+    <div class="top-bar">
+      <h1>Smart Dashboard</h1>
+      <div class="toggle">
+        <span>Dark Mode</span>
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <div class="time-display">
+      <h2>{{ time }}</h2>
+    </div>
+
+    <div class="weather-section">
+      <form method="POST">
+        <input type="text" name="city" placeholder="Enter city" required />
+        <button type="submit">Get Weather</button>
+      </form>
+      {% if weather %}
+        <div class="weather-box">
+          <h3>{{ weather.city }}</h3>
+          <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Icon">
+          <p>{{ weather.temperature }}°C - {{ weather.description }}</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="todo-section">
+      <form method="POST">
+        <input type="text" name="task" placeholder="Add new task" required />
+        <button type="submit">Add</button>
+      </form>
+      <ul>
+        {% for task in tasks %}
+          <li>{{ task }} 
+            <a href="{{ url_for('delete', index=loop.index0) }}" class="delete-btn">❌</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

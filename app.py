@@ -1,52 +1,49 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import requests
-import datetime
-import pytz
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
+to_do_items = []
 
-@app.route('/')
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template('index.html')
+    weather_data = None
+    city = "Surat"  # default city
 
-@app.route('/weather', methods=['POST'])
-def weather():
-    city = request.form['city']
+    if request.method == "POST":
+        if "city" in request.form:
+            city = request.form["city"]
+        if "task" in request.form:
+            task = request.form["task"]
+            if task:
+                to_do_items.append(task)
+
     api_key = os.getenv("WEATHER_API_KEY")
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    if api_key and city:
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            weather_data = {
+                "city": city,
+                "temperature": round(data["main"]["temp"]),
+                "description": data["weather"][0]["description"].title(),
+                "icon": data["weather"][0]["icon"]
+            }
 
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        weather_info = {
-            'city': city.title(),
-            'temp': data['main']['temp'],
-            'desc': data['weather'][0]['description'].title(),
-            'icon': data['weather'][0]['icon']
-        }
-        return render_template("index.html", weather=weather_info)
-    else:
-        return render_template("index.html", error="City not found")
+    # Get local time
+    tz = pytz.timezone("Asia/Kolkata")
+    current_time = datetime.now(tz).strftime("%I:%M %p")
 
-@app.route('/news')
-def news():
-    api_key = os.getenv("NEWS_API_KEY")
-    url = f"https://newsapi.org/v2/top-headlines?country=in&pageSize=10&apiKey={api_key}"
-    response = requests.get(url)
-    articles = []
-    if response.status_code == 200:
-        data = response.json()
-        articles = data.get('articles', [])
-    return jsonify(articles)
+    return render_template("index.html", weather=weather_data, time=current_time, tasks=to_do_items)
 
-@app.route('/time')
-def time():
-    india_time = datetime.datetime.now(pytz.timezone("Asia/Kolkata"))
-    return jsonify({'time': india_time.strftime("%I:%M:%S %p")})
+@app.route("/delete/<int:index>")
+def delete(index):
+    if 0 <= index < len(to_do_items):
+        del to_do_items[index]
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
