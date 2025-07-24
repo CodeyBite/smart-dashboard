@@ -1,20 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css" />
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .dashboard {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
             text-align: center;
-            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .date-time {
+            margin-bottom: 30px;
+        }
+
+        #date,
+        #time {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .todo-container {
+            margin: 30px 0;
+        }
+
+        .todo-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .todo-input input {
+            padding: 10px;
+            width: 60%;
+            max-width: 300px;
+        }
+
+        .todo-input button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        #task-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        #task-list li {
+            background: #e0e0e0;
+            margin: 5px auto;
+            padding: 10px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .weather-section {
+            margin-top: 40px;
+        }
+
+        .weather-section input {
+            padding: 10px;
+            width: 60%;
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+
+        .weather-section button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        #weatherResult {
+            margin-top: 15px;
+        }
+
+        /* Dark Mode Toggle Styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .todo-input input,
+            .weather-section input {
+                width: 90%;
+            }
+
+            .todo-input,
+            .weather-section {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="toggle-container">
         <label class="switch">
-            <input type="checkbox" id="darkModeToggle">
+            <input type="checkbox" id="darkModeToggle" />
             <span class="slider"></span>
         </label>
     </div>
@@ -22,40 +175,36 @@
     <div class="dashboard">
         <h1>Smart Dashboard</h1>
 
-        <!-- Date and Time (from Flask) -->
         <div class="date-time">
-            <div id="date">{{ date }}</div>
-            <div id="time">{{ time }}</div>
+            <div id="date">{{ date or 'Loading date...' }}</div>
+            <div id="time">{{ time or 'Loading time...' }}</div>
         </div>
 
-        <!-- To-Do List -->
         <div class="todo-container">
             <h2>📝 To-Do List</h2>
             <div class="todo-input">
-                <input type="text" id="new-task" placeholder="Enter new task...">
+                <input type="text" id="new-task" placeholder="Enter new task..." />
                 <button onclick="addTask()">Add</button>
             </div>
             <ul id="task-list"></ul>
         </div>
 
-        <!-- Weather Info -->
         <div class="weather-section">
-            <h2>🌦 Weather Info</h2>
+            <h2>Weather Info</h2>
             <form method="POST">
-                <input type="text" name="city" placeholder="Enter city name" value="{{ city }}">
+                <input type="text" name="city" placeholder="Enter city name" value="{{ city or '' }}" />
                 <button type="submit">Get Weather</button>
             </form>
-
-            {% if weather %}
             <div id="weatherResult">
-                <p><strong>Description:</strong> {{ weather.description }}</p>
-                <p><strong>Temperature:</strong> {{ weather.temp }}°C</p>
-                <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
-                <p><strong>Wind:</strong> {{ weather.wind }} km/h</p>
+                {% if weather %}
+                    <p><strong>Description:</strong> {{ weather.description }}</p>
+                    <p><strong>Temperature:</strong> {{ weather.temp }}°C</p>
+                    <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
+                    <p><strong>Wind:</strong> {{ weather.wind }} m/s</p>
+                {% elif city %}
+                    <p>Weather data not found for "{{ city }}"</p>
+                {% endif %}
             </div>
-            {% else %}
-            <p>No weather data available for "{{ city }}".</p>
-            {% endif %}
         </div>
     </div>
 
