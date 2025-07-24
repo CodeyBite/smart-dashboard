@@ -20,7 +20,7 @@ def get_time():
 @app.route('/weather')
 def get_weather():
     city = request.args.get('city')
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
     
     response = requests.get(url)
     if response.status_code != 200:
