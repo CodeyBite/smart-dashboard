@@ -1,19 +1,13 @@
 function updateTimeAndDate() {
-    fetch('/time')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('time').textContent = data.time;
-
-            const today = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = today.toLocaleDateString('en-IN', options);
-            document.getElementById('date').textContent = formattedDate;
-        });
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    
+document.getElementById('time').innerText = timeString;
 }
 
-// Update every second
-setInterval(updateTimeAndDate, 1000);
-updateTimeAndDate(); // Run once on load
+             // Update every second
+setInterval(updateTime, 1000);
+updateTime(); // Run once on load
 
 function addTask() {
     const taskInput = document.getElementById("new-task");

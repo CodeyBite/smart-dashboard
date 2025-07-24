@@ -212,8 +212,12 @@
         </div>
     </div>
     <div id="news">
-        <h3>📰 Latest News</h3>
-        <ul id="news-list"></ul>
+        <h2>📰 Latest News</h2>
+        <ul>
+            {% for article in articles %}
+            <li><a herf="{{ article.url }}" target="_blank">{{ article.title }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
 
     <script>
