@@ -57,10 +57,10 @@ def get_news():
     articles = []
     if response.status_code == 200:
         data = response.json()
-    articles == data['articles'][:10]  # Limit to top 10 news
+    articles == data.get('articles',[:10])  # Limit to top 10 news
     
     return
-render_template("index.html", articles=article)
+render_template("index.html", articles=articles)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
