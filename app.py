@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import requests
 import os
 from datetime import datetime
@@ -44,6 +44,21 @@ def dashboard():
 
     weather = get_weather(city)
     return render_template("index.html", time=time_str, date=date_str, weather=weather, city=city)
+
+@app.route('/news')
+def get_news():
+    api_key = os.getenv("NEWS_API_KEY")
+    url = f"https://newsapi.org/v2/top-headlines?country=in&apiKey={api_key}"
+
+    response = requests.get(url)
+    if response.status_code != 200:
+        return jsonify({'error': 'Could not fetch news'})
+    
+    data = response.json()
+    articles = data.get('articles', [])[:10]  # Limit to top 10 news
+    news_list = [{'title': a['title'], 'url': a['url']} for a in articles]
+    
+    return jsonify(news=news_list)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)

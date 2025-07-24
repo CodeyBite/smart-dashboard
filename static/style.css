@@ -199,3 +199,33 @@ input:checked + .slider:before {
         align-items: center;
     }
 }
+
+.toggle-container{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.toggle-container-label{
+    font-size: 16px;
+    font-weight: 600;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+#news-section{
+    background-color: #1e1e1e;
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+#news-list{
+    list-style-type: none;
+    padding: 0;
+}
+
+#news-list li{
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #444;
+}

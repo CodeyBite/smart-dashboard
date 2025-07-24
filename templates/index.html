@@ -166,6 +166,7 @@
 </head>
 <body>
     <div class="toggle-container">
+        <p class="toggle-container">🌑 Dark Mode</p>
         <label class="switch">
             <input type="checkbox" id="darkModeToggle" />
             <span class="slider"></span>
@@ -192,7 +193,7 @@
         <div class="weather-section">
             <h2>🌦️Weather Info</h2>
             <p style="font-size: 0.9em; color: gray; margin-top: -10px;">
-                (💡TIP: Use lowercase for city name<em>mumbai</em>,<em>delhi</em>, etc.)
+                (💡TIP: Use lowercase for city name like <em>mumbai</em>,<em>delhi</em>, etc.)
             </p>
             <form method="POST">
                 <input type="text" name="city" placeholder="Enter city name" value="{{ city or '' }}" />
@@ -210,6 +211,27 @@
             </div>
         </div>
     </div>
+    <div id="news">
+        <h3>📰 Latest News</h3>
+        <ul id="news-list"></ul>
+    </div>
+
+    <script>
+        fetch('/news')
+        .then(response => response.json())
+        .then(data => {
+            const newsList =
+    document.getElementById('news-list');
+        data.artical.forEach(artical =>
+        {
+            const item = 
+    document.createElement('li');
+        item.textContent = 
+    artical.title;
+        newsList.appendChild(iteam);
+        });
+        });
+    </script>
 
     <script src="/static/script.js"></script>
 </body>
