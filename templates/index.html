@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -20,37 +23,41 @@
     </header>
 
     <div class="dashboard">
-        <div class="card todo-card">
-  <h2>✅ To-Do List</h2>
-  <form id="todo-form">
-    <input type="text" id="todo-input" placeholder="Add task..." required>
-    <button type="submit">Add</button>
-  </form>
-  <ul id="todo-list">
-    <!-- Tasks appear here -->
-  </ul>
-</div>
-        <div class="card">
+        <!-- Weather Card -->
+        <div class="card weather-card">
             <h2>⛅ Weather</h2>
             <form id="weather-form">
-                <input type="text" id="city-input" placeholder="Enter city" required>
+                <input type="text" id="city-input" placeholder="Enter city (e.g., London)" required>
                 <button type="submit">Search</button>
             </form>
             <div class="weather-result">
-                <img id="weather-icon" src="" alt="Weather icon">
+                <div id="weather-icon"></div>
                 <div>
                     <p id="city-name">--</p>
                     <p id="temp">--°C</p>
                     <p id="description">--</p>
-                    <p id="humidity">Humidity: --%</p>
+                    <p id="humidity">💧 Humidity: --%</p>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <h2>📰 Top 10 News</h2>
-            <div id="news-container" class="news-list">
-                <!-- News loaded via JavaScript -->
+        <!-- To-Do List Card -->
+        <div class="card todo-card">
+            <h2>✅ To-Do List</h2>
+            <form id="todo-form">
+                <input type="text" id="todo-input" placeholder="Add task..." required>
+                <button type="submit">Add</button>
+            </form>
+            <ul id="todo-list"></ul>
+        </div>
+
+        <!-- News Card -->
+        <div class="card news-card">
+            <h2>📰 Top News Headlines</h2>
+            <div class="news-scroller" id="news-container"></div>
+            <div class="news-controls">
+                <button id="news-prev">◀</button>
+                <button id="news-next">▶</button>
             </div>
         </div>
     </div>

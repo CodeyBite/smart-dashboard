@@ -1,13 +1,14 @@
-import os
 from flask import Flask, render_template, request, jsonify
 import requests
+from datetime import datetime
+import os
 from dotenv import load_dotenv
 
-load_dotenv()  # Load .env for local development
+load_dotenv()
 
 app = Flask(__name__)
 
-# Get API keys from environment variables (set in Render dashboard)
+# API Keys
 OWM_API_KEY = os.getenv('OWM_API_KEY')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
@@ -49,9 +50,10 @@ def get_news():
             'articles': [
                 {
                     'title': article['title'],
-                    'description': article['description'],
-                    'url': article['url']
-                } for article in data['articles'][:10]  # Top 10
+                    'description': article.get('description', ''),
+                    'url': article['url'],
+                    'source': article['source']['name']
+                } for article in data['articles'][:10]
             ]
         })
     except Exception as e:
