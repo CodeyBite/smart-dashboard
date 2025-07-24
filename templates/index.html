@@ -1,242 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f5f5f5;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <title>Smart Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .toggle-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .dashboard {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .date-time {
-            margin-bottom: 30px;
-        }
-
-        #date,
-        #time {
-            font-size: 1.2rem;
-            margin: 5px 0;
-        }
-
-        .todo-container {
-            margin: 30px 0;
-        }
-
-        .todo-input {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .todo-input input {
-            padding: 10px;
-            width: 60%;
-            max-width: 300px;
-        }
-
-        .todo-input button {
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-
-        #task-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 15px;
-        }
-
-        #task-list li {
-            background: #e0e0e0;
-            margin: 5px auto;
-            padding: 10px;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 5px;
-            text-align: left;
-        }
-
-        .weather-section {
-            margin-top: 40px;
-        }
-
-        .weather-section input {
-            padding: 10px;
-            width: 60%;
-            max-width: 300px;
-            margin-bottom: 10px;
-        }
-
-        .weather-section button {
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-
-        #weatherResult {
-            margin-top: 15px;
-        }
-
-        /* Dark Mode Toggle Styles */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .todo-input input,
-            .weather-section input {
-                width: 90%;
-            }
-
-            .todo-input,
-            .weather-section {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .dark-mode .card {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+    .form-check-input:checked {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    a {
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body>
-    <div class="toggle-container">
-        <p class="toggle-container">🌑 Dark Mode</p>
-        <label class="switch">
-            <input type="checkbox" id="darkModeToggle" />
-            <span class="slider"></span>
-        </label>
-    </div>
+<body class="container py-4">
 
-    <div class="dashboard">
-        <h1>Smart Dashboard</h1>
+  <div class="toggle-container">
+    <label class="form-check-label me-2" for="darkModeSwitch">Dark Mode</label>
+    <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+  </div>
 
-        <div class="date-time">
-            <div id="date">{{ date or 'Loading date...' }}</div>
-            <div id="time">{{ time or 'Loading time...' }}</div>
-        </div>
+  <h1 class="mb-4 text-center">🌐 Smart Dashboard</h1>
 
-        <div class="todo-container">
-            <h2>📝 To-Do List</h2>
-            <div class="todo-input">
-                <input type="text" id="new-task" placeholder="Enter new task..." />
-                <button onclick="addTask()">Add</button>
-            </div>
-            <ul id="task-list"></ul>
-        </div>
+  <!-- Time and Date -->
+  <div class="card mb-4 p-4 text-center">
+    <h4 class="mb-2">🕒 Current Time</h4>
+    <p class="fs-4">{{ time }}</p>
+    <p class="mb-0">📅 {{ date }}</p>
+  </div>
 
-        <div class="weather-section">
-            <h2>🌦️Weather Info</h2>
-            <p style="font-size: 0.9em; color: gray; margin-top: -10px;">
-                (💡TIP: Use lowercase for city name like <em>mumbai</em>,<em>delhi</em>, etc.)
-            </p>
-            <form method="POST">
-                <input type="text" name="city" placeholder="Enter city name" value="{{ city or '' }}" />
-                <button type="submit">Get Weather</button>
-            </form>
-            <div id="weatherResult">
-                {% if weather %}
-                    <p><strong>Description:</strong> {{ weather.description }}</p>
-                    <p><strong>Temperature:</strong> {{ weather.temp }}°C</p>
-                    <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
-                    <p><strong>Wind:</strong> {{ weather.wind }} m/s</p>
-                {% elif city %}
-                    <p>Weather data not found for "{{ city }}"</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div id="news">
-        <h2>📰 Latest News</h2>
-        <ul>
-            {% for article in articles %}
-            <li><a herf="{{ article.url }}" target="_blank">{{ article.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+  <!-- Weather Info -->
+  {% if weather %}
+  <div class="card mb-4 p-4">
+    <h4 class="mb-3">☁️ Weather in {{ weather.name }}</h4>
+    <p>🌡️ Temperature: {{ weather.main.temp }}°C</p>
+    <p>🌥️ Condition: {{ weather.weather[0].description.title() }}</p>
+  </div>
+  {% else %}
+  <div class="card mb-4 p-4">
+    <p>⚠️ Weather data not available.</p>
+  </div>
+  {% endif %}
 
-    <script>
-        fetch('/news')
-        .then(response => response.json())
-        .then(data => {
-            const newsList =
-    document.getElementById('news-list');
-        data.artical.forEach(artical =>
-        {
-            const item = 
-    document.createElement('li');
-        item.textContent = 
-    artical.title;
-        newsList.appendChild(iteam);
-        });
-        });
-    </script>
+  <!-- Top News -->
+  {% if articles %}
+  <div class="card p-4 mb-4">
+    <h4 class="mb-3">📰 Top Headlines</h4>
+    <ul class="list-group list-group-flush">
+      {% for article in articles %}
+        <li class="list-group-item bg-transparent border-0">
+          <a href="{{ article.url }}" target="_blank" class="text-primary">{{ article.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <div class="card mb-4 p-4">
+    <p>⚠️ No news articles available.</p>
+  </div>
+  {% endif %}
 
-    <script src="/static/script.js"></script>
+  <!-- Bootstrap & JS -->
+  <script>
+    const darkToggle = document.getElementById('darkModeSwitch');
+    darkToggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
