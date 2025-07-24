@@ -1,38 +1,71 @@
-// TIME CLOCK
-function updateTime() {
-  const now = new Date();
-  const timeElement = document.getElementById("time");
-  timeElement.textContent = now.toLocaleTimeString();
+// Live Clock
+function updateClock() {
+    const now = new Date();
+    document.getElementById('live-clock').textContent = now.toLocaleString();
+    setTimeout(updateClock, 1000);
 }
-setInterval(updateTime, 1000);
-updateTime();
+updateClock();
 
-// DARK MODE TOGGLE
-const toggle = document.getElementById("darkToggle");
-toggle.addEventListener("change", () => {
-  document.body.classList.toggle("dark-mode", toggle.checked);
+// Dark Mode Toggle
+document.getElementById('dark-mode-checkbox').addEventListener('change', function() {
+    document.body.classList.toggle('dark-mode', this.checked);
+    localStorage.setItem('darkMode', this.checked);
 });
 
-// WEATHER FETCH
-document.getElementById("weatherForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const city = document.getElementById("cityInput").value;
-  fetch(`/weather?city=${encodeURIComponent(city)}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const weatherBox = document.getElementById("weather-box");
-      if (data.error) {
-        weatherBox.innerHTML = `<p>${data.error}</p>`;
-      } else {
-        weatherBox.innerHTML = `
-          <h3>${data.city}</h3>
-          <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather Icon">
-          <p>${data.description}</p>
-          <p>${data.temp}°C</p>
-        `;
-      }
-    })
-    .catch(() => {
-      document.getElementById("weather-box").innerHTML = `<p>Failed to fetch weather</p>`;
-    });
+// Initialize dark mode from localStorage
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+    document.getElementById('dark-mode-checkbox').checked = true;
+}
+
+// Weather Form
+document.getElementById('weather-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const city = document.getElementById('city-input').value;
+    
+    try {
+        const response = await fetch('/get_weather', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `city=${encodeURIComponent(city)}`
+        });
+        
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        
+        document.getElementById('city-name').textContent = data.city;
+        document.getElementById('temp').textContent = `${data.temp}°C`;
+        document.getElementById('description').textContent = data.description;
+        document.getElementById('humidity').textContent = `Humidity: ${data.humidity}%`;
+        document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.icon}.png`;
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
 });
+
+// Load News
+async function loadNews() {
+    try {
+        const response = await fetch('/get_news');
+        const data = await response.json();
+        
+        const newsContainer = document.getElementById('news-container');
+        newsContainer.innerHTML = '';
+        
+        data.articles.forEach(article => {
+            const articleEl = document.createElement('div');
+            articleEl.className = 'news-item';
+            articleEl.innerHTML = `
+                <h3>${article.title}</h3>
+                <p>${article.description || ''}</p>
+                <a href="${article.url}" target="_blank">Read more →</a>
+            `;
+            newsContainer.appendChild(articleEl);
+        });
+    } catch (error) {
+        console.error('News load error:', error);
+    }
+}
+loadNews();

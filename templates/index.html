@@ -1,57 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="top-bar">
-      <h1>Smart Dashboard</h1>
-      <div class="toggle">
-        <span>Dark Mode</span>
-        <label class="switch">
-          <input type="checkbox" id="theme-toggle">
-          <span class="slider round"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="time-display">
-      <h2>{{ time }}</h2>
-    </div>
-
-    <div class="weather-section">
-      <form method="POST">
-        <input type="text" name="city" placeholder="Enter city" required />
-        <button type="submit">Get Weather</button>
-      </form>
-      {% if weather %}
-        <div class="weather-box">
-          <h3>{{ weather.city }}</h3>
-          <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Icon">
-          <p>{{ weather.temperature }}°C - {{ weather.description }}</p>
+    <header>
+        <h1>🌐 Smart Dashboard</h1>
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-checkbox">
+                <span class="slider"></span>
+            </label>
+            <span>Dark Mode</span>
         </div>
-      {% endif %}
+        <div id="live-clock"></div>
+    </header>
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>⛅ Weather</h2>
+            <form id="weather-form">
+                <input type="text" id="city-input" placeholder="Enter city" required>
+                <button type="submit">Search</button>
+            </form>
+            <div class="weather-result">
+                <img id="weather-icon" src="" alt="Weather icon">
+                <div>
+                    <p id="city-name">--</p>
+                    <p id="temp">--°C</p>
+                    <p id="description">--</p>
+                    <p id="humidity">Humidity: --%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📰 Top 10 News</h2>
+            <div id="news-container" class="news-list">
+                <!-- News loaded via JavaScript -->
+            </div>
+        </div>
     </div>
 
-    <div class="todo-section">
-      <form method="POST">
-        <input type="text" name="task" placeholder="Add new task" required />
-        <button type="submit">Add</button>
-      </form>
-      <ul>
-        {% for task in tasks %}
-          <li>{{ task }} 
-            <a href="{{ url_for('delete', index=loop.index0) }}" class="delete-btn">❌</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
