@@ -60,7 +60,7 @@ def get_news():
     articles == data['articles'][:10]  # Limit to top 10 news
     
     return
-render_template("index.html", articles=articles)
+render_template("index.html", articles=article)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=10000)
