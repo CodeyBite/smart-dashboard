@@ -13,8 +13,9 @@ def index():
 @app.route('/time')
 def get_time():
     from datetime import datetime
-    now = datetime.now()
-    current_time = now.strftime("%I:%M:%S %p")
+    import pytz
+    tz = pytz.timezone('Asia/Kolkata')
+   current_time = datetime.now(tz).strftime("%A %d %B,%Y\n%I:%M:%S %p")
     return jsonify(time=current_time)
 
 @app.route('/weather')
