@@ -57,7 +57,7 @@ def get_news():
     articles = []
     if response.status_code == 200:
         data = response.json()
-    articles == data.get('articles',[:10])  # Limit to top 10 news
+    articles == data.get('articles',[10])  # Limit to top 10 news
     
     return
 render_template("index.html", articles=articles)
