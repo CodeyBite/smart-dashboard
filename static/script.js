@@ -1,31 +1,90 @@
-// Dark mode toggle
-document.addEventListener("DOMContentLoaded", () => {
-    const toggle = document.getElementById("darkToggle");
-    const body = document.body;
+// Dark Mode Toggle
+document.getElementById('theme-toggle').addEventListener('change', function () {
+    document.body.classList.toggle('dark-mode', this.checked);
+    localStorage.setItem('darkMode', this.checked);
+});
 
-    // Apply saved mode
-    if (localStorage.getItem("mode") === "dark") {
-        toggle.checked = true;
-        body.classList.add("dark");
-    }
+// Load dark mode preference
+window.addEventListener('load', () => {
+    const isDark = localStorage.getItem('darkMode') === 'true';
+    document.getElementById('theme-toggle').checked = isDark;
+    if (isDark) document.body.classList.add('dark-mode');
+    updateTime();
+    loadTodos();
+});
 
-    // Toggle event
-    toggle.addEventListener("change", () => {
-        if (toggle.checked) {
-            body.classList.add("dark");
-            localStorage.setItem("mode", "dark");
-        } else {
-            body.classList.remove("dark");
-            localStorage.setItem("mode", "light");
-        }
-    });
-
-    // Live time update
-    const timeElement = document.getElementById("time");
-    function updateTime() {
+// Live Time Update
+function updateTime() {
+    const timeDisplay = document.getElementById('time');
+    setInterval(() => {
         const now = new Date();
-        timeElement.textContent = now.toLocaleTimeString();
+        const timeString = now.toLocaleTimeString();
+        const dateString = now.toLocaleDateString();
+        timeDisplay.textContent = `${dateString} ${timeString}`;
+    }, 1000);
+}
+
+// To-do List
+function addTodo(text) {
+    const todoList = document.getElementById('todo-list');
+    const li = document.createElement('li');
+    li.textContent = text;
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '✕';
+    delBtn.onclick = () => {
+        todoList.removeChild(li);
+        saveTodos();
+    };
+
+    li.appendChild(delBtn);
+    todoList.appendChild(li);
+    saveTodos();
+}
+
+function saveTodos() {
+    const todos = [];
+    document.querySelectorAll('#todo-list li').forEach(li => {
+        todos.push(li.firstChild.textContent.trim());
+    });
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function loadTodos() {
+    const saved = JSON.parse(localStorage.getItem('todos') || "[]");
+    saved.forEach(text => addTodo(text));
+}
+
+document.getElementById('todo-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const input = document.getElementById('todo-input');
+    if (input.value.trim()) {
+        addTodo(input.value.trim());
+        input.value = '';
     }
-    updateTime(); // initial
-    setInterval(updateTime, 1000);
+});
+
+// Weather form
+document.getElementById('weather-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const city = document.getElementById('city-input').value;
+    const weatherInfo = document.getElementById('weather-result');
+    if (!city.trim()) return;
+
+    try {
+        const res = await fetch(`/weather?city=${city}`);
+        const data = await res.json();
+
+        if (data.error) {
+            weatherInfo.innerHTML = `<p>${data.error}</p>`;
+        } else {
+            weatherInfo.innerHTML = `
+                <p>${data.city}, ${data.country}</p>
+                <p>${data.temp}°C - ${data.description}</p>
+                <img src="http://openweathermap.org/img/wn/${data.icon}@2x.png" alt="Weather Icon">
+            `;
+        }
+    } catch (err) {
+        weatherInfo.innerHTML = `<p>Could not fetch weather info</p>`;
+    }
 });
