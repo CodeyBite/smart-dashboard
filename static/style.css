@@ -1,42 +1,180 @@
-body {
+/* Reset and Base */
+body, html {
+  margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
-  color: #212529;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background 0.3s, color 0.3s;
 }
 
-.dark-mode {
+body {
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+#datetime {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.dark-mode-toggle {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Sections */
+section {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+/* Weather */
+.weather-section form input,
+.todo-section form input {
+  padding: 0.5rem;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.weather-section form button,
+.todo-section form button {
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.weather-info {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.weather-info img {
+  width: 60px;
+}
+
+.error {
+  color: red;
+}
+
+/* To-Do */
+.todo-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.todo-section li {
+  background: #f0f0f0;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* News */
+.news-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.news-section li {
+  margin-bottom: 0.5rem;
+}
+
+.news-section a {
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+.news-section a:hover {
+  text-decoration: underline;
+}
+
+/* Dark Mode */
+body.dark {
   background-color: #121212;
   color: #f1f1f1;
 }
 
-.card {
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+body.dark .container {
+  background: #1e1e1e;
 }
 
-.dark-mode .card {
-  background-color: #1e1e1e;
-  color: #f1f1f1;
-}
-
-.toggle-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.form-check-input:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+body.dark a {
+  color: #90caf9;
 }
