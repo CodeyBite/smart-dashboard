@@ -1,49 +1,50 @@
-import os
+from flask import Flask, render_template, request
 import requests
-from flask import Flask, render_template, request, jsonify
+import os
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 
-API_KEY = os.getenv("WEATHER_API_KEY")
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/time')
-def get_time():
-    from datetime import datetime
-    import pytz
-    
-    ist = pytz.timezoe('Asia/Kolkata')
+# Get current time and date in IST
+def get_time_date():
+    ist = pytz.timezone('Asia/Kolkata')
     now = datetime.now(ist)
     time_str = now.strftime("%I:%M %p")
     date_str = now.strftime("%A, %d %B %Y")
+    return time_str, date_str
 
-@app.route('/weather')
-def get_weather():
-    city = request.args.get('city')
-    API_KEY = os.getenv("WEATHER_API_KEY")  # Make sure this is set on Render
+# Get weather info using OpenWeatherMap API
+def get_weather(city):
+    API_KEY = os.getenv("WEATHER_API_KEY")
     if not API_KEY:
-        return {"error": "API key missing"}
+        return {"error": "API key not found. Please set WEATHER_API_KEY in your environment."}
 
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
     try:
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
         response = requests.get(url)
         data = response.json()
 
         if response.status_code != 200 or "main" not in data:
-            return {"error": "City not found or API issue"}
+            return {"error": f"City '{city}' not found or API error."}
 
-        weather = {
-            "temperature": data["main"]["temp"],
+        return {
+            "temperature": round(data["main"]["temp"]),
             "description": data["weather"][0]["description"].capitalize(),
             "city": data["name"]
         }
-        return weather
-
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"Error fetching weather: {str(e)}"}
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+@app.route("/", methods=["GET", "POST"])
+def dashboard():
+    time_str, date_str = get_time_date()
+    city = "Surat"  # Default city
+    if request.method == "POST":
+        city = request.form.get("city") or "Surat"
+
+    weather = get_weather(city)
+    return render_template("dashboard.html", time=time_str, date=date_str, weather=weather, city=city)
+
+if __name__ == "__main__":
+    app.run(debug=True)
