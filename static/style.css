@@ -1,180 +1,182 @@
-/* Reset and Base */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  transition: background 0.3s, color 0.3s;
-}
-
+/* Base styling */
 body {
-  background-color: #f5f7fa;
-  color: #333;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background: #fff;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-  border-radius: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
 /* Header */
 header {
-  text-align: center;
-  margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-bottom: 0.3rem;
+    font-size: 2rem;
+    margin: 0.5rem 0;
 }
 
-#datetime {
-  font-size: 0.95rem;
-  color: #555;
+#time {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
 }
 
-.dark-mode-toggle {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
+/* Dark mode switch */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: 0.3s;
-  border-radius: 24px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #bbb;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.3s;
-  border-radius: 50%;
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
 }
 
 input:checked + .slider {
-  background-color: #66bb6a;
+    background-color: #333;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+input:checked + .slider::before {
+    transform: translateX(24px);
 }
 
-/* Sections */
-section {
-  margin-bottom: 2rem;
-}
-
-h2 {
-  margin-bottom: 0.5rem;
-  color: #444;
+.dark-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
 }
 
 /* Weather */
-.weather-section form input,
-.todo-section form input {
-  padding: 0.5rem;
-  width: 70%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.weather {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.weather-section form button,
-.todo-section form button {
-  padding: 0.5rem 1rem;
-  margin-left: 0.5rem;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.weather form {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
-.weather-info {
-  margin-top: 1rem;
-  text-align: center;
+.weather input {
+    padding: 0.5rem;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.weather-info img {
-  width: 60px;
+.weather button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.weather-box {
+    padding: 1rem;
+    background-color: #e0e0e0;
+    border-radius: 10px;
 }
 
 .error {
-  color: red;
+    color: red;
 }
 
-/* To-Do */
-.todo-section ul {
-  list-style: none;
-  padding-left: 0;
+/* To-do List */
+.todo input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    margin-bottom: 1rem;
 }
 
-.todo-section li {
-  background: #f0f0f0;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.todo ul {
+    list-style: none;
+    padding: 0;
+}
+
+.todo li {
+    padding: 0.5rem;
+    background-color: #d0f0d0;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* News */
-.news-section ul {
-  list-style: none;
-  padding-left: 0;
+.news ul {
+    list-style: none;
+    padding: 0;
 }
 
-.news-section li {
-  margin-bottom: 0.5rem;
+.news li {
+    background-color: #eef;
+    margin-bottom: 0.8rem;
+    padding: 1rem;
+    border-radius: 5px;
 }
 
-.news-section a {
-  text-decoration: none;
-  color: #1a73e8;
-}
-
-.news-section a:hover {
-  text-decoration: underline;
-}
-
-/* Dark Mode */
+/* Dark mode styles */
 body.dark {
-  background-color: #121212;
-  color: #f1f1f1;
+    background-color: #222;
+    color: #eee;
 }
 
-body.dark .container {
-  background: #1e1e1e;
+body.dark .weather-box {
+    background-color: #333;
 }
 
-body.dark a {
-  color: #90caf9;
+body.dark .todo li {
+    background-color: #444;
+}
+
+body.dark .news li {
+    background-color: #444;
+}
+
+body.dark .weather button {
+    background-color: #ddd;
+    color: #000;
 }

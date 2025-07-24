@@ -1,72 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Dashboard</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🧠 Smart Dashboard</h1>
-      <p id="datetime"></p>
-      <div class="dark-mode-toggle">
-        <span>Dark Mode</span>
-        <label class="switch">
-          <input type="checkbox" id="darkToggle">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Smart Dashboard</h1>
+            <p id="time"></p>
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider"></span>
+            </label>
+            <p class="dark-label">Dark Mode</p>
+        </header>
 
-    <section class="weather-section">
-      <h2>🌤️ Weather</h2>
-      <form method="POST" action="/">
-        <input type="text" name="city" placeholder="Enter city..." required />
-        <button type="submit">Get Weather</button>
-      </form>
-      {% if weather %}
-        <div class="weather-info">
-          <h3>{{ weather.city }}</h3>
-          <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="icon">
-          <p>{{ weather.description }} | {{ weather.temp }}°C</p>
-        </div>
-      {% elif error %}
-        <p class="error">{{ error }}</p>
-      {% endif %}
-    </section>
+        <!-- Weather -->
+        <section class="weather">
+            <form action="/weather" method="POST">
+                <input type="text" name="city" placeholder="Enter city..." required />
+                <button type="submit">Get Weather</button>
+            </form>
+            {% if weather %}
+                <div class="weather-box">
+                    <h2>{{ weather.city }}</h2>
+                    <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="icon" />
+                    <p>{{ weather.temp }}°C - {{ weather.desc }}</p>
+                </div>
+            {% elif error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </section>
 
-    <section class="todo-section">
-      <h2>✅ To-Do List</h2>
-      <form method="POST" action="/add">
-        <input type="text" name="todo" placeholder="New task..." required />
-        <button type="submit">Add</button>
-      </form>
-      <ul>
-        {% for item in todo_items %}
-          <li>
-            {{ item }}
-            <a href="/delete/{{ loop.index0 }}">🗑️</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
+        <!-- To-do List -->
+        <section class="todo">
+            <h2>To-Do List</h2>
+            <input type="text" id="todo-input" placeholder="Add a task..." />
+            <ul id="todo-list"></ul>
+        </section>
 
-    <section class="news-section">
-      <h2>📰 Top 10 News</h2>
-      {% if articles %}
-        <ul>
-          {% for article in articles %}
-            <li><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>No news available.</p>
-      {% endif %}
-    </section>
-  </div>
+        <!-- News -->
+        <section class="news">
+            <h2>Latest News</h2>
+            <ul id="news-list"></ul>
+        </section>
+    </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
