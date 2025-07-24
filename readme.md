@@ -1,33 +1,85 @@
-# 🧠 Smart Dashboard Web App
+# 🌐 Smart Dashboard
 
-A minimal, responsive Flask web dashboard that shows real-time **time**, **weather**, and includes a basic **to-do list** — built for learning and showcasing Python, Flask, and web integration skills.
+A feature-rich dashboard with real-time weather, news, and task management. Built with Flask, Python, and modern CSS/JS.
+ 
+*Live demo: https://smart-dashboard-yw5p.onrender.com/
+## ✨ Features
 
----
+- **Real-Time Data**
+  - Live clock with date display
+  - Current weather by city (OpenWeatherMap API)
+  - Top 10 news headlines (NewsAPI)
 
-## 🚀 Features
+- **Productivity Tools**
+  - Interactive to-do list (Add/Delete tasks)
+  - Local storage persistence
 
-- ⏰ Real-time Clock (updates every second)
-- 🌦️ Live Weather Info (OpenWeatherMap API)
-- ✅ Simple To-Do List
-- 🌙 Light/Dark Mode Toggle
-- 📱 Mobile-Friendly UI
+- **Modern UI**
+  - Dark/Light mode toggle
+  - Responsive grid layout
+  - Animated transitions
+  - Weather icons with visual clarity
 
----
+## 🛠️ Tech Stack
 
-## 🛠️ Technologies Used
+| Component       | Technology |
+|-----------------|------------|
+| Frontend        | HTML5, CSS3, Vanilla JS |
+| Backend         | Python Flask |
+| APIs            | OpenWeatherMap, NewsAPI |
+| Deployment      | Render |
+| CSS Framework   | Custom (No Bootstrap) |
 
-- **Python 3**
-- **Flask** (Backend)
-- **HTML/CSS/JavaScript** (Frontend)
-- **OpenWeatherMap API** (Weather Data)
-- **Bootstrap** (optional: if used)
-- **Jinja2** (for HTML templating)
+## 🚀 Deployment
 
----
+1. **Set up on Render**
+   ```bash
+   # Environment variables
+   OWM_API_KEY=your_openweathermap_key
+   NEWS_API_KEY=your_newsapi_key
+   ```
 
-## 🔐 API Key Setup
+2. **Build Commands**
+   ```bash
+   pip install -r requirements.txt
+   gunicorn app:app
+   ```
 
-> ⚠️ For security, do **not** hardcode your API key in `main.py`. Instead, store it in a `.env` file:
+## 📂 Project Structure
+
+```
+smart-dashboard/
+├── static/           # Frontend assets
+│   ├── script.js     # All interactive logic
+│   └── style.css     # Responsive styles
+├── templates/
+│   └── index.html    # Main dashboard UI
+├── app.py            # Flask backend
+└── requirements.txt  # Python dependencies
+```
+
+## 🎨 UI Highlights
+
+| Feature          | Implementation Details |
+|------------------|------------------------|
+| Weather Display  | High-res OpenWeatherMap icons with hover effects |
+| News Cards       | Source badges, smooth scrolling, and excerpt previews |
+| Dark Mode        | CSS variables with localStorage persistence |
+| Mobile Friendly  | Flexbox/grid with mobile-first breakpoints |
+
+## 💡 Development Tips
 
 ```bash
-API_KEY=your_openweathermap_api_key
+# Local setup
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate    # Windows
+pip install -r requirements.txt
+flask run
+```
+
+## 📜 License
+
+MIT © [CodeyBite]  
+*Weather data provided by [OpenWeatherMap](https://openweathermap.org/)*  
+*News data from [NewsAPI](https://newsapi.org/)*
